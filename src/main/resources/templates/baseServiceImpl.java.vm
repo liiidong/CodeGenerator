@@ -1,0 +1,73 @@
+package ${package.ServiceImpl};
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.crc.ims.dao.base.BaseMapper;
+import com.crc.ims.service.BaseService;
+import com.crc.mam.dto.base.CommonPageDTO;
+import com.crc.mam.entity.BaseEntity;
+import com.crc.mam.util.SpringUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+/**
+ * 服务层操作基类
+ * @author ${author}
+ * @since ${date}
+ */
+public abstract class BaseServiceImpl<M extends BaseMapper <T>, T extends BaseEntity> implements BaseService <T> {
+
+    @Autowired
+    protected M mapper;
+
+    @Override
+    public T getById(String id) throws Exception {
+        return mapper.getById(id);
+    }
+
+    @Override
+    public int insert(T t) throws Exception {
+        return mapper.insert(t);
+    }
+
+    @Override
+    public int deleteById(String id) throws Exception {
+        return mapper.deleteById(id);
+    }
+
+    @Override
+    public int deleteBatch(List <String> list) throws Exception {
+        return mapper.batchDelete(list);
+    }
+
+    @Override
+    public int update(T t) throws Exception {
+        return mapper.update(t);
+    }
+
+    @Override
+    public CommonPageDTO findPage(T t) throws Exception {
+        CommonPageDTO CommonPageDTO = t.getCommonPageDTO();
+        Page <?> page = PageHelper.startPage(CommonPageDTO.getCurrentPage(), CommonPageDTO.getPageSize());
+        CommonPageDTO.setRecordList(findList(t));
+        CommonPageDTO.initiatePage(page.getTotal());
+        return CommonPageDTO;
+    }
+
+    @Override
+    public List <T> findList(T t) throws Exception {
+        return mapper.findList(t);
+    }
+
+    /**
+     * 从beanFactory中取得当前Service对象，
+     * 用于解决同一个Service类中的方法调用，如果最外层方法不加@Transactional注解事务,则里面被调用方法的@Transactional注解事务不起作用的问题
+     * @return
+     */
+    public BaseService <?> getService() {
+        return SpringUtils.getBean(this.getClass());
+    }
+
+}

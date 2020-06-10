@@ -1,0 +1,112 @@
+package ${package.BaseController};
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.Locale;
+import java.util.Set;
+
+/**
+ * controller基类
+ * @author ${author}
+ * @since ${date}
+ */
+public class BaseController {
+
+    public HttpServletRequest getRequest() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return request;
+    }
+
+    public ReturnResult renderSuccess() {
+        return ReturnResult.success(Object.class).build();
+    }
+    public ReturnResult renderSuccess(String msg) {
+        return ReturnResult.success(Object.class).msg(msg).build();
+    }
+
+    /**
+     * 扩展返回结果
+     *
+     * @param successed
+     * @param msg
+     * @return
+     */
+    public ReturnResult renderResult(boolean successed, String msg, Object object) {
+        return ReturnResult.structure(successed, object.class).data(obj).msg(msg).build();
+    }
+    /**
+     * 扩展返回结果
+     *
+     * @param successed
+     * @param msg
+     * @return
+     */
+    public ReturnResult renderResult(boolean successed, String msg) {
+        return ReturnResult.structure(successed, Object.class).msg(msg).build();
+    }
+
+    /**
+     * 扩展返回结果
+     *
+     * @param successed
+     * @return
+     */
+    public ReturnResult renderResult(boolean successed) {
+        return ReturnResult.structure(successed, Object.class).build();
+    }
+
+    /**
+     * ajax成功
+     *
+     * @param obj 成功时的对象
+     * @return {Object}
+     */
+    public ReturnResult renderSuccess(Object obj) {
+        return ReturnResult.success(obj.class).data(obj).build();
+    }
+
+    /**
+     * ajax失败
+     *
+     * @param msg 失败的消息
+     * @return {Object}
+     */
+    public ReturnResult renderError(String msg) {
+        return ReturnResult.failed(Object.class).msg(msg).build();
+    }
+
+
+    /**
+     * 失败
+     *
+     * @return {Object}
+     */
+    public ReturnResult renderError() {
+        return ReturnResult.failed(Object.class).build();
+    }
+
+    /**
+     * bean参数验证
+     *
+     * @param <T>
+     * @param entity
+     */
+    public <T extends BaseEntity> void beanValidator(T entity) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set <ConstraintViolation <T>> constraintViolations = validator.validate(entity);
+        if (null != constraintViolations) {
+            for (ConstraintViolation <T> cv : constraintViolations) {
+                throw new IllegalArgumentException(Resources.getMessage(cv.getMessage()));
+            }
+        }
+    }
+
+}

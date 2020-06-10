@@ -1,0 +1,14 @@
+package ${package.DTO};
+
+import io.swagger.annotations.ApiModel;
+import ${package.Entity}.${entity};
+/**
+ * ${table.comment}
+ * @author ${author}
+ * @since ${date}
+ *
+ */
+@ApiModel(description="$!{table.comment}")
+public class ${entity}DTO extends ${entity} {
+	
+}

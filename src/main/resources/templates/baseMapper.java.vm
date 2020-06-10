@@ -1,0 +1,111 @@
+package ${package.Mapper};
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
+
+/**
+ * DAO支持类实现
+ * @author ${author}
+ * @since ${date}
+ *
+ */
+@Repository
+public interface BaseMapper<T> {
+
+    /**
+     * 获取单条数据
+     * @param id
+     * @return
+     */
+    T getById(String id);
+
+    /**
+     * 获取单条数据
+     * @param entity
+     * @return
+     */
+    T get(T entity);
+
+    /**
+     * 查询数据列表，如果需要分页，请设置分页对象，如：entity.setPage(new Page<T>());
+     * @param entity
+     * @return
+     */
+    List <T> findList(T entity);
+
+    /**
+     * 查询数据列表(带数据权限过滤)
+     * @param entity
+     * @return
+     */
+    List <T> findAuthorityList(T entity);
+
+    /**
+     * 插入数据
+     * @param entity
+     * @return
+     */
+    int insert(T entity);
+
+    /**
+     * 更新数据
+     * @param entity
+     * @return
+     */
+    int update(T entity);
+
+    /**
+     * 删除数据（物理删除，从数据库中彻底删除）
+     * @param id
+     * @see  int delete(T entity)
+     * @return
+     */
+    int deleteById(String id);
+
+    /**
+     * 删除数据（逻辑删除，更新deleted字段为1,在表包含字段deleted时，可以调用此方法，将数据隐藏）
+     * @param id
+     * @see  int delete(T entity)
+     * @return
+     */
+    int deleteByLogic(String id);
+
+    /**
+     * 删除数据（物理删除，从数据库中彻底删除）
+     * @param entity
+     * @return
+     */
+    int delete(T entity);
+
+    /**
+     * 删除数据（逻辑删除，更新deleted字段为1,在表包含字段deleted时，可以调用此方法，将数据隐藏）
+     * @param entity
+     * @return
+     */
+    int deleteByLogic(T entity);
+
+    /**
+     * 批量删除
+     * @param idList
+     */
+    int batchDelete(List <String> idList);
+
+    @Select("${sql}")
+    List <Object> execSelectSql(@Param(value = "sql") String sql);
+
+    @Update("${sql}")
+    void execUpdateSql(@Param(value = "sql") String sql);
+
+    @Insert("${sql}")
+    void execInsertSql(@Param(value = "sql") String sql);
+
+    @Delete("${sql}")
+    void execDeleteSql(@Param(value = "sql") String sql);
+
+}

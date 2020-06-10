@@ -1,0 +1,17 @@
+package ${package.ServiceImpl};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import ${package.DTO}.${entity}DTO;
+import ${package.Entity}.${entity};
+import ${package.Service}.${entity}Service;
+import org.springframework.stereotype.Service;
+
+/**
+ * 
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+public class ${entity}ServiceImpl extends BaseServiceImpl<${entity}Mapper,${entity}DTO> implements ${entity}Service {
+
+}
