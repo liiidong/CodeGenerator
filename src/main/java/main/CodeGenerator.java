@@ -18,7 +18,7 @@ import generator.config.rules.NamingStrategy;
 /**
  * 代码生成器演示
  */
-public class ImsGenerator {
+public class CodeGenerator {
 
     /**
      * 生成演示
@@ -61,9 +61,10 @@ public class ImsGenerator {
         // strategy.setDbColumnUnderline(true);//全局下划线命名
         // strategy.setTablePrefix(new String[] { "bmd_", "mp_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        //strategy.setInclude(new String[] { "oa_attachment_info","oa_att_updateinfo","oa_business_dept_mapping","oa_business_person_mapping","oa_buttoninfo","oa_common_tenant_config","oa_data_update_info","oa_dept_tenant_relationship","oa_flownode_btn_config","oa_flownode_ext_attribute","oa_flownode_ext_field","oa_fw_cc_info","oa_gw_config","oa_gw_tenant_source","oa_gw_user_config","oa_manual_no_other","oa_manualnumbering","oa_manual_num_use","oa_old_dept_info","oa_old_tenant_info","oa_hq_fw_basicinfo","oa_huiqianinfo","oa_qianbao_form","oa_relation_file_record","oa_report_info","oa_shouwen_form","oa_shouweninfo","oa_tenant_btn_config","oa_tenant_target_info","oa_tenant_trace_config","oa_workflow_btn_config","oa_workflow_extension"}); // 需要生成的表
-        //strategy.setInclude(new String[] { "oa_role_mapped_ab","oa_role_user_b","oa_leader_secretary_mapping"}); // 需要生成的表
-        strategy.setInclude(new String[] {"config_properties"});
+        //strategy.setInclude(new String[] { "user","dept"}); // 需要生成的表
+        strategy.setInclude(
+                new String[] {"basereport_field_rel", "data_base_report", "data_resource_field", "data_source", "datacube_setting", "new_buyer_country_type",
+                        "productplatform_field_rel", "productplatform_resource_rel", "rmkt_country_type"});
         // strategy.setExclude(new String[]{"test"}); // 排除需要生成的表
         // 自定义实体父类
         strategy.setSuperEntityClass("com.enough.test.entity.BaseEntity");
